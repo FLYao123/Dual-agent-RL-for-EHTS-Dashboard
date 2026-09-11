@@ -1,6 +1,6 @@
 # Dual-agent RL EHTS Dashboard
 
-An interactive dashboard for exploring the operation of an integrated electricity-hydrogen transport system (EHTS) under nominal and unseen operating conditions.
+An interactive dashboard for exploring the operation of an integrated electricity-hydrogen transport system (EHTS) under different operating conditions.
 
 ## Companion Dashboard for an Under-Review Manuscript
 
@@ -12,9 +12,7 @@ The manuscript presents a dual-agent reinforcement-learning framework that coord
 
 This companion dashboard provides an operational view of that coordinated framework. It allows the vehicle-service process, multi-energy dispatch, supply-demand balance, storage behaviour, infrastructure utilisation, and performance under unseen operating conditions to be explored through synchronised interactive panels.
 
-The manuscript is currently under review. Detailed algorithm implementations, training procedures, model configurations, and further technical materials will be added after the manuscript has been accepted. The present release therefore focuses on the interactive visualisation of system operation and generalisation behaviour.
-
-The dashboard follows the station's sequential operating process: low-energy electric vehicles (EVs) and hydrogen vehicles (HVs) arrive, vehicle-service decisions determine charging and refuelling activity, and the energy-dispatch system coordinates PV generation, grid electricity, pipeline hydrogen, battery storage, and hydrogen storage to meet the resulting demand.
+Detailed algorithm implementations, training procedures, model configurations, and further technical materials will be added after the manuscript has been accepted. 
 
 ## Dashboard Overview
 
