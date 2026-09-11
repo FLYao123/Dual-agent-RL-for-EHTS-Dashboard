@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EHTS Operation Dashboard</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <p class="eyebrow">Dual-agent operation viewer</p>
+      <h1>EHTS Generalisation Dashboard</h1>
+    </div>
+    <div class="controls">
+      <label>Scenario <select id="scenario-select"></select></label>
+      <div class="mode-switch" role="group" aria-label="Time display mode">
+        <button id="mode-auto" type="button" aria-pressed="true">Auto</button>
+        <button id="mode-manual" type="button" aria-pressed="false">Manual</button>
+      </div>
+      <label>Start day <input id="start-day" type="number" min="1" step="1" value="1"></label>
+      <label>Window <input id="days-shown" type="number" min="1" max="31" step="1" value="7"> days</label>
+      <button id="play-toggle" type="button">Pause</button>
+      <button id="diagnostics-toggle" type="button">Operating diagnostics</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="statusbar" aria-live="polite">
+      <strong id="active-scenario"></strong>
+      <span id="scenario-summary"></span>
+      <span id="window-status"></span>
+    </section>
+
+    <section class="week-summary" aria-label="Visible-window operational summary">
+      <div class="week-summary__grid" id="window-summary-grid"></div>
+    </section>
+
+    <section class="home-view active" id="home-view">
+
+    <section class="station-story" aria-label="Multi-energy station concept diagram">
+      <button class="station-story__toggle" type="button" aria-expanded="true">Hide station diagram</button>
+      <div class="station-story__inner">
+        <div class="station-story__copy">
+          <h1>CLEETS - EHTS: Electricity- Hydrogen-Transport-System</h1>
+          <p>
+            Low-energy electric and hydrogen vehicles arrive from the left. The station coordinates grid, PV,
+            battery, electrolyzer, hydrogen tank, chargers, and refuelers, then vehicles leave with sufficient energy.
+          </p>
+        </div>
+        <div class="station-story__canvas">
+          <svg class="station-story__svg" viewBox="0 0 1180 360" role="img" aria-labelledby="story-title story-desc">
+            <title id="story-title">Vehicle energy replenishment flow</title>
+            <desc id="story-desc">
+              Low-energy electric and hydrogen vehicles enter the multi-energy station, are replenished, and leave
+              with sufficient electric charge or hydrogen fuel. A downward arrow links the station to the dashboard.
+            </desc>
+            <defs>
+              <marker id="arrowhead" markerWidth="26" markerHeight="26" refX="24" refY="13" orient="auto" markerUnits="userSpaceOnUse">
+                <path d="M 0 0 L 26 13 L 0 26 z" fill="#2f5f8f"></path>
+              </marker>
+              <marker id="down-arrowhead" markerWidth="24" markerHeight="24" refX="22" refY="12" orient="auto" markerUnits="userSpaceOnUse">
+                <path d="M 0 0 L 24 12 L 0 24 z" fill="#315f3d"></path>
+              </marker>
+              <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
+                <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#1f2937" flood-opacity="0.16"></feDropShadow>
+              </filter>
+              <linearGradient id="station-gradient" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"></stop>
+                <stop offset="1" stop-color="#e7f4ee"></stop>
+              </linearGradient>
+            </defs>
+
+            <rect x="20" y="42" width="1140" height="220" rx="24" fill="#f8fafc" stroke="#d8e1ea"></rect>
+            <line class="flow-line flow-line--incoming" x1="72" y1="178" x2="474" y2="178" marker-end="url(#arrowhead)"></line>
+            <line class="flow-line flow-line--station-out" x1="704" y1="178" x2="774" y2="178" marker-end="url(#arrowhead)"></line>
+            <line class="flow-line flow-line--departing" x1="914" y1="178" x2="950" y2="178"></line>
+            <line class="flow-line flow-line--departing" x1="1100" y1="178" x2="1140" y2="178" marker-end="url(#arrowhead)"></line>
+            <line x1="590" y1="248" x2="590" y2="306" stroke="#315f3d" stroke-width="7" stroke-linecap="round" marker-end="url(#down-arrowhead)"></line>
+
+            <text x="185" y="78" text-anchor="middle" class="story-label story-label--muted">Arriving low-energy vehicles</text>
+            <text x="990" y="78" text-anchor="middle" class="story-label story-label--muted">Departing energy-sufficient vehicles</text>
+            <text x="590" y="348" text-anchor="middle" class="story-label story-label--dashboard">Operational dashboard below</text>
+
+            <g class="vehicle vehicle--incoming" transform="translate(80 112)">
+              <animateTransform attributeName="transform" type="translate" additive="sum" values="-8 0; 8 0; -8 0" dur="2.8s" repeatCount="indefinite"></animateTransform>
+              <rect x="0" y="30" width="128" height="50" rx="14" fill="#dfe7ef" stroke="#738094" stroke-width="2"></rect>
+              <path d="M 24 30 L 48 8 H 87 L 111 30 Z" fill="#eef4f9" stroke="#738094" stroke-width="2"></path>
+              <circle cx="32" cy="84" r="12" fill="#273142"></circle>
+              <circle cx="98" cy="84" r="12" fill="#273142"></circle>
+              <rect x="22" y="48" width="52" height="13" rx="4" fill="#ffffff" stroke="#9aa6b2"></rect>
+              <rect x="22" y="48" width="16" height="13" rx="4" fill="#d95745"></rect>
+              <text x="64" y="115" text-anchor="middle" class="story-small">EV low SOC</text>
+            </g>
+            <g class="vehicle vehicle--incoming" transform="translate(250 114)">
+              <animateTransform attributeName="transform" type="translate" additive="sum" values="-6 0; 10 0; -6 0" dur="3.1s" repeatCount="indefinite"></animateTransform>
+              <rect x="0" y="24" width="138" height="58" rx="16" fill="#e0e8ef" stroke="#738094" stroke-width="2"></rect>
+              <rect x="70" y="3" width="44" height="28" rx="8" fill="#eef4f9" stroke="#738094" stroke-width="2"></rect>
+              <circle cx="36" cy="86" r="12" fill="#273142"></circle>
+              <circle cx="105" cy="86" r="12" fill="#273142"></circle>
+              <path d="M 24 52 H 68" stroke="#d95745" stroke-width="8" stroke-linecap="round"></path>
+              <text x="70" y="116" text-anchor="middle" class="story-small">HV low H2</text>
+            </g>
+
+            <g class="station-node" filter="url(#soft-shadow)">
+              <rect x="492" y="72" width="196" height="176" rx="18" fill="url(#station-gradient)" stroke="#5d8a6a" stroke-width="3"></rect>
+              <rect x="526" y="126" width="128" height="98" rx="10" fill="#ffffff" stroke="#8eb29a" stroke-width="2"></rect>
+              <path d="M 520 126 L 590 88 L 660 126 Z" fill="#6aa77a" stroke="#477653" stroke-width="3"></path>
+              <text x="590" y="114" text-anchor="middle" class="station-title">Multi-Energy</text>
+              <text x="590" y="135" text-anchor="middle" class="station-title">Station</text>
+
+              <g transform="translate(514 151)">
+                <rect x="0" y="0" width="72" height="28" rx="7" fill="#e8f2ff" stroke="#5b8cc0"></rect>
+                <text x="36" y="19" text-anchor="middle" class="station-chip">EV charge</text>
+              </g>
+              <g transform="translate(594 151)">
+                <rect x="0" y="0" width="72" height="28" rx="7" fill="#e9f7ef" stroke="#59a86b"></rect>
+                <text x="36" y="19" text-anchor="middle" class="station-chip">H2 refuel</text>
+              </g>
+              <g transform="translate(514 187)">
+                <rect x="0" y="0" width="92" height="28" rx="7" fill="#fff4de" stroke="#d59b39"></rect>
+                <text x="46" y="19" text-anchor="middle" class="station-chip">PV/Grid/Pipeline</text>
+              </g>
+              <g transform="translate(614 187)">
+                <rect x="0" y="0" width="72" height="28" rx="7" fill="#f0ecff" stroke="#8a73c7"></rect>
+                <text x="36" y="19" text-anchor="middle" class="station-chip">Storage</text>
+              </g>
+            </g>
+
+            <g class="vehicle vehicle--outgoing" transform="translate(790 112)">
+              <animateTransform attributeName="transform" type="translate" additive="sum" values="-6 0; 10 0; -6 0" dur="2.7s" repeatCount="indefinite"></animateTransform>
+              <rect x="0" y="30" width="128" height="50" rx="14" fill="#dff0e7" stroke="#498760" stroke-width="2"></rect>
+              <path d="M 24 30 L 48 8 H 87 L 111 30 Z" fill="#f2fbf5" stroke="#498760" stroke-width="2"></path>
+              <circle cx="32" cy="84" r="12" fill="#273142"></circle>
+              <circle cx="98" cy="84" r="12" fill="#273142"></circle>
+              <rect x="22" y="48" width="52" height="13" rx="4" fill="#ffffff" stroke="#75a985"></rect>
+              <rect x="22" y="48" width="52" height="13" rx="4" fill="#2eaf61"></rect>
+              <text x="64" y="115" text-anchor="middle" class="story-small">EV charged</text>
+            </g>
+            <g class="vehicle vehicle--outgoing" transform="translate(960 114)">
+              <animateTransform attributeName="transform" type="translate" additive="sum" values="-5 0; 9 0; -5 0" dur="3s" repeatCount="indefinite"></animateTransform>
+              <rect x="0" y="24" width="138" height="58" rx="16" fill="#dff0e7" stroke="#498760" stroke-width="2"></rect>
+              <rect x="70" y="3" width="44" height="28" rx="8" fill="#f2fbf5" stroke="#498760" stroke-width="2"></rect>
+              <circle cx="36" cy="86" r="12" fill="#273142"></circle>
+              <circle cx="105" cy="86" r="12" fill="#273142"></circle>
+              <path d="M 24 52 H 96" stroke="#2eaf61" stroke-width="8" stroke-linecap="round"></path>
+              <text x="70" y="116" text-anchor="middle" class="story-small">HV refueled</text>
+            </g>
+          </svg>
+        </div>
+        <div class="station-story__mobile-flow" aria-hidden="true">
+          <div class="mobile-flow__node mobile-flow__node--incoming">
+            <strong>Arriving low-energy vehicles</strong>
+            <span>EV low SOC</span>
+            <span>HV low H2</span>
+          </div>
+          <div class="mobile-flow__arrow">&darr;</div>
+          <div class="mobile-flow__node mobile-flow__node--station">
+            <strong>Multi-Energy Station</strong>
+            <span>EV charge | H2 refuel</span>
+            <span>PV/Grid/Pipeline | Storage</span>
+          </div>
+          <div class="mobile-flow__arrow">&darr;</div>
+          <div class="mobile-flow__node mobile-flow__node--outgoing">
+            <strong>Departing energy-sufficient vehicles</strong>
+            <span>EV charged</span>
+            <span>HV refueled</span>
+          </div>
+          <div class="mobile-flow__arrow mobile-flow__arrow--dashboard">&darr;</div>
+          <div class="mobile-flow__dashboard">Operational dashboard below</div>
+        </div>
+      </div>
+    </section>
+
+      <div class="home-intro">
+        <h2>Sequential station operation</h2>
+        <p>Every 15 minutes, vehicle scheduling acts first and creates the charging and refuelling demand seen by energy dispatch. The panels below separate that operating chain into three readable views while preserving one shared scenario and time window.</p>
+      </div>
+
+      <div class="operation-grid">
+        <button class="operation-card card-vehicle" data-view="vehicle" type="button">
+          <span class="card-index">01</span>
+          <span class="card-title">Vehicle Scheduling Operation</span>
+          <span class="card-copy">PPO-PL ranks waiting EVs and HVs; deterministic greedy allocation maps the priorities to feasible chargers and refuellers. This view tracks arrivals, assignments, queues and pile loading.</span>
+        </button>
+        <button class="operation-card card-energy" data-view="energy" type="button">
+          <span class="card-index">02</span>
+          <span class="card-title">Energy Dispatch Operation</span>
+          <span class="card-copy">After vehicle demand is revealed, TD3 controls battery and hydrogen-tank movement and splits surplus PV between storage and electrolysis to reduce operating cost.</span>
+        </button>
+        <button class="operation-card card-balance" data-view="balance" type="button">
+          <span class="card-index">03</span>
+          <span class="card-title">Supply-Demand Balance</span>
+          <span class="card-copy">Grid and pipeline imports close any residual electricity and hydrogen demand. This view checks the supply composition and interval-level balance residuals.</span>
+        </button>
+      </div>
+
+      <section class="scenario-guide">
+        <div>
+          <h2>Generalisation scenarios S0-S8</h2>
+          <p>All scenarios deploy the same trained PPO-PL and TD3 parameters without retraining or fine-tuning.</p>
+        </div>
+        <div class="scenario-list" id="scenario-grid"></div>
+      </section>
+    </section>
+
+    <section class="dashboard-view" id="vehicle-view">
+      <nav class="view-nav" aria-label="Operation views"></nav>
+      <div class="view-heading">
+        <h2>Vehicle Scheduling Operation</h2>
+        <p>Priority-based assignment, queue evolution and service-pile utilisation.</p>
+      </div>
+      <div class="plot-grid two">
+        <article><h3>EV Arrivals / Assigned / Waiting</h3><div class="plot" id="ev-flow"></div></article>
+        <article><h3>Charger Utilisation</h3><div class="plot" id="charger-util"></div></article>
+        <article><h3>HV Arrivals / Assigned / Waiting</h3><div class="plot" id="hv-flow"></div></article>
+        <article><h3>Refueller Utilisation</h3><div class="plot" id="refueler-util"></div></article>
+      </div>
+    </section>
+
+    <section class="dashboard-view" id="energy-view">
+      <nav class="view-nav" aria-label="Operation views"></nav>
+      <div class="view-heading">
+        <h2>Energy Dispatch Operation</h2>
+        <p>PV allocation, battery/tank operation, energy prices and storage states.</p>
+      </div>
+      <div class="plot-grid two">
+        <article><h3>PV Generation &amp; Weather</h3><div class="plot" id="pv-weather"></div></article>
+        <article><h3>PV Utilisation Breakdown</h3><div class="plot" id="pv-breakdown"></div></article>
+        <article><h3>Electricity Charge/Discharge (+ Price)</h3><div class="plot" id="electric-dispatch"></div></article>
+        <article><h3>Hydrogen Charge/Discharge (+ Price)</h3><div class="plot" id="hydrogen-dispatch"></div></article>
+        <article class="wide"><h3>Energy Storage SOC</h3><div class="plot" id="storage-soc"></div></article>
+      </div>
+    </section>
+
+    <section class="dashboard-view" id="balance-view">
+      <nav class="view-nav" aria-label="Operation views"></nav>
+      <div class="view-heading">
+        <h2>Supply-Demand Balance</h2>
+        <p>Supply composition and balance residuals for the scheduling-induced loads.</p>
+      </div>
+      <div class="plot-grid single">
+        <article><h3>Electric Power Supply-Demand Balance</h3><div class="plot" id="electric-balance"></div></article>
+        <article><h3>Hydrogen Supply-Demand Balance</h3><div class="plot" id="hydrogen-balance"></div></article>
+        <article><h3>Supply-Demand Mismatch Diagnostics</h3><div class="plot" id="mismatch"></div></article>
+      </div>
+    </section>
+  </main>
+
+  <div class="diagnostics-backdrop" id="diagnostics-backdrop" hidden></div>
+  <aside class="diagnostics-panel" id="diagnostics-panel" role="dialog" aria-modal="true" aria-labelledby="diagnostics-title" hidden>
+    <div class="diagnostics-head">
+      <div>
+        <h2 id="diagnostics-title">Operating characteristics</h2>
+        <p id="diagnostics-caption"></p>
+      </div>
+      <button id="diagnostics-close" type="button">Close</button>
+    </div>
+    <div class="diagnostics-grid">
+      <article>
+        <h3>Energy-source and storage diagnostics</h3>
+        <div class="diagnostic-plot" id="diagnostics-ratios"></div>
+      </article>
+      <article>
+        <h3>Service-pile utilisation</h3>
+        <div class="diagnostic-plot" id="diagnostics-piles"></div>
+      </article>
+    </div>
+  </aside>
+
+  <script src="assets/plotly.min.js"></script>
+  <script src="data/scenarios.js"></script>
+  <script src="assets/dashboard.js"></script>
+</body>
+</html>
