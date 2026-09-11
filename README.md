@@ -1,4 +1,4 @@
-# EHTS Generalisation Dashboard
+# Dual-agent RL EHTS Dashboard
 
 An interactive dashboard for exploring the operation of an integrated electricity-hydrogen transport system (EHTS) under nominal and unseen operating conditions.
 
