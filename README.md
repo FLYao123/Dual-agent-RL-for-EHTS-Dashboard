@@ -6,11 +6,11 @@ An interactive dashboard for exploring the operation of an integrated electricit
 
 This dashboard is the interactive companion to the manuscript:
 
-> **Dual-Agent Reinforcement Learning for Vehicle Scheduling and Multi-Energy Dispatch in Electric–Hydrogen Transportation Systems** *(under review)*
+> **Dual-Agent Reinforcement Learning for Vehicle Scheduling and Multi-Energy Dispatch in Electric–Hydrogen Transport Systems** *(under review)*
 
 The manuscript presents a dual-agent reinforcement-learning framework that coordinates two connected decision layers in an electric-hydrogen transportation system. The upstream vehicle-scheduling agent determines service priorities for waiting EVs and HVs, while the downstream multi-energy-dispatch agent coordinates electricity, hydrogen, renewable generation, and energy storage in response to the resulting charging and refuelling demand.
 
-This companion dashboard provides an operational view of that coordinated framework. It allows the vehicle-service process, multi-energy dispatch, supply-demand balance, storage behaviour, and infrastructure utilisation to be explored through synchronised interactive panels.
+This companion dashboard provides an operational view of that coordinated framework. It allows the vehicle-service process, multi-energy dispatch, supply-demand balance, storage behaviour, and infrastructure utilisation to be explored through synchronised interactive panels. This dashboard presents the system operation under the nominal scenario considered in the paper; additional generalisation scenarios will be added in future updates.
 
 Detailed algorithm implementations, training procedures, model configurations, and further technical materials will be added after the manuscript has been accepted.
 
