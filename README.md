@@ -18,7 +18,6 @@ Detailed algorithm implementations, training procedures, model configurations, a
 
 The home page provides:
 
-- A station-level diagram showing the movement of EVs and HVs through the multi-energy station.
 - Direct access to the three principal operational views.
 - A concise description of the operating setting.
 - A shared time-window control bar that applies across all views.
